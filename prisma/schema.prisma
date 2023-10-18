@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bidang {
+  id          String    @id @default(uuid())
+  nama_bidang String
+  createdAt   DateTime  @default(now()) @db.Timestamp(3)
+  updatedAt   DateTime  @updatedAt @db.Timestamp(3)
+  Pegawai     Pegawai[]
+}
+
+model Pangkat {
+  id           String    @id @default(uuid())
+  nama_pangkat String
+  pegawai      Pegawai[]
+  createdAt    DateTime  @default(now()) @db.Timestamp(3)
+  updatedAt    DateTime  @updatedAt @db.Timestamp(3)
+}
+
+model Golongan {
+  id            String    @id @default(uuid())
+  nama_golongan String
+  pegawai       Pegawai[]
+  createdAt     DateTime  @default(now()) @db.Timestamp(3)
+  updatedAt     DateTime  @updatedAt @db.Timestamp(3)
+}
+
+enum Jabatan {
+  pegawai
+  kaban
+  sekban
+  kabag
+  kasubag
+}
+
+model Pegawai {
+  id                  String    @id @default(uuid())
+  nip                 String?    @db.VarChar(18)
+  jenis_pegawai       String?   @db.VarChar(10)
+  name                String    @db.VarChar(100)
+  tempat_lahir        String    @db.VarChar(200)
+  tanggal_lahir       String    @db.VarChar(11)
+  nama_jabatan        Jabatan   @default(pegawai)
+  jabatan             String?   @db.Text
+  initial_jabatan     String?   @db.VarChar(100)
+  masa_kerja_golongan String?   @db.VarChar(50)
+  diklat              String?   @db.Text
+  pendidikan          String?   @db.VarChar(200)
+  no_sk               String?
+  no_rekening         String?
+  nama_rekening       String?   @db.VarChar(100)
+  umur                Int
+  jenis_kelamin       String    @db.VarChar(10)
+  agama               String    @db.VarChar(10)
+  kenaikan_pangkat    String?   @db.VarChar(100)
+  batas_pensiun       Int?
+  foto                String?
+  url                 String?
+  bidangId            String?
+  bidang              Bidang ?   @relation(fields: [bidangId], references: [id])
+  Pangkat             Pangkat?  @relation(fields: [pangkatId], references: [id])
+  pangkatId           String?
+  Golongan            Golongan? @relation(fields: [golonganId], references: [id])
+  golonganId          String?
+  createdAt           DateTime  @default(now()) @db.Timestamp(3)
+  updatedAt           DateTime  @updatedAt @db.Timestamp(3)
+}
