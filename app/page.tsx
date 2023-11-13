@@ -4,6 +4,8 @@ const prisma = new PrismaClient();
 
 const getPegawai = async () => {
   const res = await prisma.pegawai.findMany({
+    skip: 0,
+    take: 9,
     where: {
       jenis_pegawai: 'pns'
     },
@@ -28,7 +30,7 @@ const Home = async () => {
         <div key={index} className="join join-horizontal">
           <div className="card w-96 bg-base-100 shadow-xl mr-8 mt-8">
             <a href="">
-              <Image src={`/public/images/${pegawai.foto}`} alt="Shoes" width={100} height={100} />
+              <Image src={`/images/${pegawai.foto}`} alt="Shoes" width={390} height={100} />
             </a>
             <div className="card-body">
               <h2 className="card-title">
